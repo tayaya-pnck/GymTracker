@@ -1,6 +1,8 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-const BASE_URL = 'http://10.0.2.2:8084/api/v1';
+// Change this to your computer's LAN IP so your phone can reach the backend
+// Find it with: ip addr show (linux), ipconfig (windows), ifconfig (mac)
+const BASE_URL = 'http://172.26.108.21:8084/api/v1';
 
 const api = axios.create({
   baseURL: BASE_URL,

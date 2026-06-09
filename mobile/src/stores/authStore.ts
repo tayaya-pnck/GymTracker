@@ -1,9 +1,7 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { createMMKV } from 'react-native-mmkv';
+import { persist } from 'zustand/middleware';
 import { authApi, setAuthToken } from '../services/api';
-
-const storage = createMMKV({ id: 'auth-storage' });
+import { asyncStorage } from './storage';
 
 const base64Decode = (str: string): string => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -22,19 +20,6 @@ const base64Decode = (str: string): string => {
     if (enc4 !== 64) output += String.fromCharCode(dec3);
   }
   return output;
-};
-
-const mmkvStorage = {
-  getItem: (name: string) => {
-    const value = storage.getString(name);
-    return value ?? null;
-  },
-  setItem: (name: string, value: string) => {
-    storage.set(name, value);
-  },
-  removeItem: (name: string) => {
-    storage.remove(name);
-  },
 };
 
 interface User {
@@ -118,7 +103,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      storage: createJSONStorage(() => mmkvStorage),
+      storage: asyncStorage,
       partialize: (state) => ({
         token: state.token,
         user: state.user,

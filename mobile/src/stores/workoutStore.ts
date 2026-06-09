@@ -1,22 +1,7 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { createMMKV } from 'react-native-mmkv';
+import { persist } from 'zustand/middleware';
 import { trackingApi } from '../services/api';
-
-const storage = createMMKV({ id: 'workout-storage' });
-
-const mmkvStorage = {
-  getItem: (name: string) => {
-    const value = storage.getString(name);
-    return value ?? null;
-  },
-  setItem: (name: string, value: string) => {
-    storage.set(name, value);
-  },
-  removeItem: (name: string) => {
-    storage.remove(name);
-  },
-};
+import { asyncStorage } from './storage';
 
 export interface SetLog {
   id: string;
@@ -166,7 +151,7 @@ export const useWorkoutStore = create<WorkoutState>()(
     }),
     {
       name: 'workout-storage',
-      storage: createJSONStorage(() => mmkvStorage),
+      storage: asyncStorage,
       partialize: (state) => ({
         activeSession: state.activeSession,
       }),

@@ -1,4 +1,23 @@
 {
-  "name": "mobile",
-  "displayName": "mobile"
+  "expo": {
+    "name": "GymTracker",
+    "slug": "gym-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0D0D0F"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gymtracker.app"
+    },
+    "android": {
+      "package": "com.gymtracker.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0D0D0F"
+      }
+    },
+    "plugins": []
+  }
 }

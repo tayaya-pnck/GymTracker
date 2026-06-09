@@ -1,6 +1,6 @@
 # GymTracker 💪
 
-Aight so this is GymTracker — a full-stack workout app that lets you plan your workouts, track what you actually do in the gym, and keep a history of your gains (or lack thereof). Built with a Spring Boot backend and a React Native mobile app.
+Aight so this is GymTracker — a full-stack workout app that lets you plan your workouts, track what you actually do in the gym, and keep a history of your gains (or lack thereof). Built with a Spring Boot backend and an Expo/React Native mobile app.
 
 ## What it does
 
@@ -9,7 +9,7 @@ Aight so this is GymTracker — a full-stack workout app that lets you plan your
 - **Today's Workout** — the app knows what day it is (shocking, right?) and shows you what you've scheduled for today
 - **Live Tracking** — start a workout session, log sets with weight & reps as you go, then finish up
 - **Workout History** — every set you log gets saved so you can look back and see if you're actually progressing
-- **PR Detection** — if you hit a new personal record, the app knows (no notifications for it yet on the frontend tho)
+- **PR Detection** — if you hit a new personal record, the app knows (still needs UI for it on the frontend tho)
 
 ## Tech Stack
 
@@ -29,13 +29,12 @@ Aight so this is GymTracker — a full-stack workout app that lets you plan your
 
 | Thing | What it is |
 |---|---|
-| Framework | React Native 0.85.3 |
+| Framework | Expo (SDK 55) + React Native 0.85 |
 | Language | TypeScript |
-| State Management | Zustand |
+| State Management | Zustand (persisted with AsyncStorage) |
 | Navigation | React Navigation (stack + bottom tabs) |
 | Styling | NativeWind (Tailwind for RN) |
 | HTTP | Axios |
-| Storage | MMKV |
 
 ## Getting Started
 
@@ -65,10 +64,16 @@ Swagger UI will be at `http://localhost:8084/swagger-ui.html`.
 ```bash
 cd mobile
 npm install
-npx react-native start
+npx expo start
 ```
 
-The mobile app points at `http://10.0.2.2:8084/api/v1` by default (Android emulator). If you're on iOS or a real device, change that in `mobile/src/services/api.ts`.
+Scan the QR code with **Expo Go** on your phone. Make sure your phone and computer are on the same network. If that doesn't work, try tunnel mode:
+
+```bash
+npx expo start --tunnel
+```
+
+The mobile app points at `http://172.26.108.21:8084/api/v1` by default — change that in `mobile/src/services/api.ts` to match your machine's local IP.
 
 ## API Endpoints
 
@@ -111,13 +116,15 @@ mobile/
 │   ├── services/      # Axios API client
 │   ├── navigation/    # React Navigation setup
 │   └── theme/         # colors, muscle group colors, dark theme
+├── app.json           # Expo config
+├── App.tsx            # Root component
+└── assets/            # Icons, splash, etc.
 ```
 
 ## Stuff that could be better
 
 - **No real tests** — there's literally one test that checks if Spring Boot starts. That's it.
 - **Flyway is disabled** — schema is managed by JPA auto-update, which is fine for dev but you'd want migrations in prod
-- **The test user's password isn't hashed** in the data initializer (but the auth service does hash it for real users)
 - **Mobile app is a work in progress** — some screens work, some are placeholders
 - **PR detection exists server-side** but there's no UI for it yet
 
